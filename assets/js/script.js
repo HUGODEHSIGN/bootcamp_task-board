@@ -38,6 +38,7 @@ function createTaskCard({ id, taskTitle, taskDueDate, taskDescription }) {
     }'>Delete</button>
   </div>
   `);
+  newTaskCard.find('button').on('click', handleDeleteTask);
   return newTaskCard;
 }
 
@@ -95,7 +96,14 @@ function handleAddTask(event) {
 }
 
 // Todo: create a function to handle deleting a task
-function handleDeleteTask(event) {}
+function handleDeleteTask(event) {
+  const deleteCardId = $(event.target).parent().parent()[0].dataset.task;
+  tasks = tasks.filter((task) => {
+    return task.id !== deleteCardId;
+  });
+  localStorage.setItem('tasks', JSON.stringify(tasks));
+  renderTaskList();
+}
 
 // Todo: create a function to handle dropping a task into a new status lane
 function handleDrop(event, ui) {
