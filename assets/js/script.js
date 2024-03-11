@@ -11,7 +11,7 @@ function createTaskCard({ taskTitle, taskDueDate, taskDescription }) {
   newTaskCard.html(`<h4 class='card-header'>${taskTitle}</h4>
   <div class='card-body'>
   <p>${taskDescription}</p>
-  <p>${taskDueDate}</p>
+  <p>${taskDueDate.format('MM/DD/YYYY')}</p>
   <button class='btn btn-danger'>Delete</button>
   </div>
   `);
@@ -25,13 +25,14 @@ function renderTaskList() {}
 function handleAddTask(event) {
   event.preventDefault();
   const taskTitle = $(event.target).find('input')[0].value;
-  const taskDueDate = $(event.target).find('input')[1].value;
+  const taskDueDate = dayjs($(event.target).find('input')[1].value);
   const taskDescription = $(event.target).find('input')[2].value;
   const newTask = {
     taskTitle,
     taskDueDate,
     taskDescription,
   };
+  console.log(newTask);
   createTaskCard(newTask);
   return newTask;
 }
