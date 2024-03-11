@@ -30,7 +30,7 @@ function createTaskCard(
 ) {
   // create card with proper styling
   const newTaskCard = $(
-    `<div class='card mb-3 draggable 
+    `<div class='card task-card mb-3 draggable 
     ${!isDone && compareDates(taskDueDate).cardBg}
     ' data-task='${id}'>`
   );
