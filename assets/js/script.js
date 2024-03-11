@@ -6,7 +6,17 @@ let nextId = JSON.parse(localStorage.getItem('nextId'));
 function generateTaskId() {}
 
 // Todo: create a function to create a task card
-function createTaskCard(task) {}
+function createTaskCard({ taskTitle, taskDueDate, taskDescription }) {
+  const newTaskCard = $(`<div class='card text-white bg-primary mb-3'>`);
+  newTaskCard.html(`<h4 class='card-header'>${taskTitle}</h4>
+  <div class='card-body'>
+  <p>${taskDescription}</p>
+  <p>${taskDueDate}</p>
+  <button class='btn btn-danger'>Delete</button>
+  </div>
+  `);
+  $('#todo-cards').append(newTaskCard);
+}
 
 // Todo: create a function to render the task list and make cards draggable
 function renderTaskList() {}
@@ -22,6 +32,8 @@ function handleAddTask(event) {
     taskDueDate,
     taskDescription,
   };
+  createTaskCard(newTask);
+  return newTask;
 }
 
 // Todo: create a function to handle deleting a task
