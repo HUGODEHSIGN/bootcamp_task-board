@@ -66,8 +66,9 @@
             </div>
             <div class="modal-body">
               <form
-                class="row g-3"
-                id="taskForm">
+                class="row g-3 needs-validation"
+                id="taskForm"
+                novalidate>
                 <div class="col-md-6">
                   <label
                     for="taskTitle"
@@ -77,7 +78,10 @@
                   <input
                     type="text"
                     class="form-control"
-                    id="taskTitle" />
+                    id="taskTitle"
+                    required />
+                  <div class="valid-feedback">Great title!</div>
+                  <div class="invalid-feedback">Your task needs a title</div>
                 </div>
                 <div class="col-md-6">
                   <label
@@ -88,7 +92,10 @@
                   <input
                     type="date"
                     class="form-control"
-                    id="taskDue" />
+                    id="taskDue"
+                    required />
+                  <div class="valid-feedback">Better get going!</div>
+                  <div class="invalid-feedback">Your task needs a deadline</div>
                 </div>
                 <div class="col-12">
                   <label
@@ -99,7 +106,12 @@
                   <input
                     type="text"
                     class="form-control"
-                    id="taskDescription" />
+                    id="taskDescription"
+                    required />
+                  <div class="valid-feedback">Great description!</div>
+                  <div class="invalid-feedback">
+                    Your task needs a description
+                  </div>
                 </div>
                 <div class="col-12">
                   <button
