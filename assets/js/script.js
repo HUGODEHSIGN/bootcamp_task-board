@@ -7,10 +7,11 @@ let tasks = [];
 
 //compare current date and task due date
 function compareDates(dueDate) {
-  if (dueDate.isTomorrow() || dueDate.isToday()) {
+  const formattedDueDate = dayjs(dueDate);
+  if (formattedDueDate.isTomorrow() || formattedDueDate.isToday()) {
     return { cardBg: 'bg-warning', btnBorder: null };
   }
-  if (dueDate.isSameOrBefore()) {
+  if (formattedDueDate.isSameOrBefore()) {
     return { cardBg: 'bg-danger text-white', btnBorder: 'border-white' };
   }
   return { cardBg: null, btnBorder: null };
@@ -24,14 +25,14 @@ function generateTaskId() {
 // Todo: create a function to create a task card
 function createTaskCard({ id, taskTitle, taskDueDate, taskDescription }) {
   const newTaskCard = $(
-    `<div class='card mb-3 draggable ${
-      compareDates(taskDueDate).cardBg
-    }' data-task='${id}'>`
+    `<div class='card mb-3 draggable 
+    ${compareDates(taskDueDate).cardBg}
+    ' data-task='${id}'>`
   );
   newTaskCard.html(`<h4 class='card-header'>${taskTitle}</h4>
   <div class='card-body'>
     <p>${taskDescription}</p>
-    <p>${taskDueDate.format('MM/DD/YYYY')}</p>
+    <p>${dayjs(taskDueDate).format('MM/DD/YYYY')}</p>
     <button class='btn btn-danger ${
       compareDates(taskDueDate).btnBorder
     }'>Delete</button>
@@ -77,7 +78,7 @@ function renderTaskList() {
 function handleAddTask(event) {
   event.preventDefault();
   const taskTitle = $(event.target).find('input')[0].value;
-  const taskDueDate = dayjs($(event.target).find('input')[1].value);
+  const taskDueDate = $(event.target).find('input')[1].value;
   const taskDescription = $(event.target).find('input')[2].value;
   const newTask = {
     id: generateTaskId(),
@@ -86,7 +87,9 @@ function handleAddTask(event) {
     taskDescription,
     status: 'to-do',
   };
+  console.log(tasks);
   tasks.push(newTask);
+  localStorage.setItem('tasks', JSON.stringify(tasks));
   renderTaskList();
   return newTask;
 }
@@ -107,6 +110,7 @@ function handleDrop(event, ui) {
       task.status = newStatus;
     }
   });
+  localStorage.setItem('tasks', JSON.stringify(tasks));
   renderTaskList();
 }
 
@@ -119,4 +123,13 @@ $(document).ready(function () {
       drop: handleDrop,
     });
   });
+
+  if (!taskList) {
+    tasks = [];
+    return;
+  }
+
+  tasks = taskList;
+  console.log(tasks);
+  renderTaskList();
 });
