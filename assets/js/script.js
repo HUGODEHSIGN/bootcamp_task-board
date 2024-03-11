@@ -18,15 +18,15 @@ function compareDates(dueDate) {
 
 // Todo: create a function to generate a unique task id
 function generateTaskId() {
-  return Math.floor(Math.random() * 100000);
+  return Math.floor(Math.random() * 100000).toString();
 }
 
 // Todo: create a function to create a task card
-function createTaskCard({ taskTitle, taskDueDate, taskDescription }) {
+function createTaskCard({ id, taskTitle, taskDueDate, taskDescription }) {
   const newTaskCard = $(
     `<div class='card mb-3 draggable ${
       compareDates(taskDueDate).cardBg
-    }' data-task='${generateTaskId()}'>`
+    }' data-task='${id}'>`
   );
   newTaskCard.html(`<h4 class='card-header'>${taskTitle}</h4>
   <div class='card-body'>
@@ -38,13 +38,24 @@ function createTaskCard({ taskTitle, taskDueDate, taskDescription }) {
   </div>
   `);
   return newTaskCard;
-  // $('#todo-cards').append(newTaskCard);
 }
 
 // Todo: create a function to render the task list and make cards draggable
 function renderTaskList() {
+  $('#todo-cards').html('');
+  $('#in-progress-cards').html('');
+  $('#done-cards').html('');
+
   tasks.forEach((task) => {
-    $('#todo-cards').append(createTaskCard(task));
+    if (task.status === 'to-do') {
+      $('#todo-cards').append(createTaskCard(task));
+    }
+    if (task.status === 'in-progress') {
+      $('#in-progress-cards').append(createTaskCard(task));
+    }
+    if (task.status === 'done') {
+      $('#done-cards').append(createTaskCard(task));
+    }
   });
 
   $('.draggable').draggable({
@@ -69,13 +80,14 @@ function handleAddTask(event) {
   const taskDueDate = dayjs($(event.target).find('input')[1].value);
   const taskDescription = $(event.target).find('input')[2].value;
   const newTask = {
+    id: generateTaskId(),
     taskTitle,
     taskDueDate,
     taskDescription,
+    status: 'to-do',
   };
   tasks.push(newTask);
   renderTaskList();
-  // createTaskCard(newTask);
   return newTask;
 }
 
@@ -84,10 +96,18 @@ function handleDeleteTask(event) {}
 
 // Todo: create a function to handle dropping a task into a new status lane
 function handleDrop(event, ui) {
-  console.log(event, ui);
   const taskId = ui.draggable[0].dataset.task;
-  console.log(taskId);
+
   const newStatus = event.target.id;
+  console.log(newStatus);
+  tasks.forEach((task) => {
+    console.log(task.id, taskId);
+    if (task.id === taskId) {
+      console.log('here');
+      task.status = newStatus;
+    }
+  });
+  renderTaskList();
 }
 
 // Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
