@@ -23,10 +23,13 @@ function generateTaskId() {
 }
 
 // Todo: create a function to create a task card
-function createTaskCard({ id, taskTitle, taskDueDate, taskDescription }) {
+function createTaskCard(
+  { id, taskTitle, taskDueDate, taskDescription },
+  isDone
+) {
   const newTaskCard = $(
     `<div class='card mb-3 draggable 
-    ${compareDates(taskDueDate).cardBg}
+    ${!isDone && compareDates(taskDueDate).cardBg}
     ' data-task='${id}'>`
   );
   newTaskCard.html(`<h4 class='card-header'>${taskTitle}</h4>
@@ -34,7 +37,7 @@ function createTaskCard({ id, taskTitle, taskDueDate, taskDescription }) {
     <p>${taskDescription}</p>
     <p>${dayjs(taskDueDate).format('MM/DD/YYYY')}</p>
     <button class='btn btn-danger ${
-      compareDates(taskDueDate).btnBorder
+      !isDone && compareDates(taskDueDate).btnBorder
     }'>Delete</button>
   </div>
   `);
@@ -50,13 +53,13 @@ function renderTaskList() {
 
   tasks.forEach((task) => {
     if (task.status === 'to-do') {
-      $('#todo-cards').append(createTaskCard(task));
+      $('#todo-cards').append(createTaskCard(task, false));
     }
     if (task.status === 'in-progress') {
-      $('#in-progress-cards').append(createTaskCard(task));
+      $('#in-progress-cards').append(createTaskCard(task, false));
     }
     if (task.status === 'done') {
-      $('#done-cards').append(createTaskCard(task));
+      $('#done-cards').append(createTaskCard(task, true));
     }
   });
 
