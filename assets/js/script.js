@@ -8,6 +8,7 @@ let tasks = [];
 //compare current date and task due date
 function compareDates(dueDate) {
   const formattedDueDate = dayjs(dueDate);
+  // for card color
   if (formattedDueDate.isTomorrow() || formattedDueDate.isToday()) {
     return { cardBg: 'bg-warning', btnBorder: null };
   }
@@ -17,21 +18,24 @@ function compareDates(dueDate) {
   return { cardBg: null, btnBorder: null };
 }
 
-// Todo: create a function to generate a unique task id
+// function to generate a unique task id
 function generateTaskId() {
   return Math.floor(Math.random() * 100000).toString();
 }
 
-// Todo: create a function to create a task card
+// function to create a task card
 function createTaskCard(
   { id, taskTitle, taskDueDate, taskDescription },
   isDone
 ) {
+  // create card with proper styling
   const newTaskCard = $(
     `<div class='card mb-3 draggable 
     ${!isDone && compareDates(taskDueDate).cardBg}
     ' data-task='${id}'>`
   );
+
+  // card content with proper styling
   newTaskCard.html(`<h4 class='card-header'>${taskTitle}</h4>
   <div class='card-body'>
     <p>${taskDescription}</p>
@@ -41,16 +45,20 @@ function createTaskCard(
     }'>Delete</button>
   </div>
   `);
+
+  // cards only have delete button, add delete event listener
   newTaskCard.find('button').on('click', handleDeleteTask);
   return newTaskCard;
 }
 
-// Todo: create a function to render the task list and make cards draggable
+// function to render the task list and make cards draggable
 function renderTaskList() {
+  // clear out all three lanes
   $('#todo-cards').html('');
   $('#in-progress-cards').html('');
   $('#done-cards').html('');
 
+  // render each task in their proper lanes
   tasks.forEach((task) => {
     if (task.status === 'to-do') {
       $('#todo-cards').append(createTaskCard(task, false));
@@ -63,6 +71,7 @@ function renderTaskList() {
     }
   });
 
+  // make cards draggable
   $('.draggable').draggable({
     opacity: 0.7,
     zIndex: 100,
@@ -78,16 +87,21 @@ function renderTaskList() {
   });
 }
 
-// Todo: create a function to handle adding a new task
+// function to handle adding a new task
 function handleAddTask(event) {
+  // prevent page reload
   event.preventDefault();
+  // declare form variable as it is used several times throughout this function
   const form = event.target;
-  console.log(form.checkValidity());
+  // for bootstrap validation messages
   $(form).addClass('was-validated');
+
+  // prevent the rest of code from running if not validated
   if (!form.checkValidity()) {
     return;
   }
 
+  // create new object of form data
   const taskTitle = $(event.target).find('input')[0].value;
   const taskDueDate = $(event.target).find('input')[1].value;
   const taskDescription = $(event.target).find('input')[2].value;
@@ -98,43 +112,55 @@ function handleAddTask(event) {
     taskDescription,
     status: 'to-do',
   };
-  console.log(tasks);
+
+  // pushes new tasks to global tasks array
   tasks.push(newTask);
+  // sets local storage
   localStorage.setItem('tasks', JSON.stringify(tasks));
+  // render tasks
   renderTaskList();
-  return newTask;
 }
 
-// Todo: create a function to handle deleting a task
+// function to handle deleting a task
 function handleDeleteTask(event) {
+  // get the targeted card through the clicked button
   const deleteCardId = $(event.target).parent().parent()[0].dataset.task;
+  // find the right task in the tasks array and removes it
   tasks = tasks.filter((task) => {
     return task.id !== deleteCardId;
   });
+
+  // set local storage to new task
   localStorage.setItem('tasks', JSON.stringify(tasks));
   renderTaskList();
 }
 
-// Todo: create a function to handle dropping a task into a new status lane
+// function to handle dropping a task into a new status lane
 function handleDrop(event, ui) {
+  // get a reference to the id of the dragged card
   const taskId = ui.draggable[0].dataset.task;
 
+  // get the new status that will be applied to the card
   const newStatus = event.target.id;
-  console.log(newStatus);
+
+  // filter through the right task and applies the new status to the task
   tasks.forEach((task) => {
-    console.log(task.id, taskId);
     if (task.id === taskId) {
-      console.log('here');
       task.status = newStatus;
     }
   });
+
+  // stores new array to local storage
   localStorage.setItem('tasks', JSON.stringify(tasks));
   renderTaskList();
 }
 
-// Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
+// when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
 $(document).ready(function () {
+  // form submit listener
   $('#taskForm').on('submit', handleAddTask);
+
+  // make lanes droppable
   $(function () {
     $('.lane').droppable({
       accept: '.draggable',
@@ -142,12 +168,13 @@ $(document).ready(function () {
     });
   });
 
+  // checkes if there are any tasks in localstorage
   if (!taskList) {
     tasks = [];
     return;
   }
 
+  // initializes tasks array and renders them
   tasks = taskList;
-  console.log(tasks);
   renderTaskList();
 });
