@@ -43,7 +43,7 @@
           Add Task
         </button>
       </div>
-      <!-- Todo: Create a modal with a form to add tasks -->
+      <!-- modal with a form to add tasks -->
       <div
         class="modal fade"
         id="formModal"
@@ -52,6 +52,7 @@
         aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
+            <!-- header -->
             <div class="modal-header">
               <h1
                 class="modal-title fs-5"
@@ -65,10 +66,12 @@
                 aria-label="Close"></button>
             </div>
             <div class="modal-body">
+              <!-- form -->
               <form
                 class="row g-3 needs-validation"
                 id="taskForm"
                 novalidate>
+                <!-- task title -->
                 <div class="col-md-6">
                   <label
                     for="taskTitle"
@@ -83,6 +86,7 @@
                   <div class="valid-feedback">Great title!</div>
                   <div class="invalid-feedback">Your task needs a title</div>
                 </div>
+                <!-- task deadline -->
                 <div class="col-md-6">
                   <label
                     for="taskDue"
@@ -97,6 +101,7 @@
                   <div class="valid-feedback">Better get going!</div>
                   <div class="invalid-feedback">Your task needs a deadline</div>
                 </div>
+                <!-- task description -->
                 <div class="col-12">
                   <label
                     for="taskDescription"
@@ -126,6 +131,7 @@
         </div>
       </div>
 
+      <!-- lanes to represent states of task -->
       <div class="row swim-lanes text-center justify-content-between">
         <div class="col-12 col-lg-4 d-flex">
           <div
