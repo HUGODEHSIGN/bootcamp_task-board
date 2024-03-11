@@ -2,17 +2,32 @@
 let taskList = JSON.parse(localStorage.getItem('tasks'));
 let nextId = JSON.parse(localStorage.getItem('nextId'));
 
+//compare current date and task due date
+function compareDates(dueDate) {
+  if (dueDate.isTomorrow() || dueDate.isToday()) {
+    return { cardBg: 'bg-warning', btnBorder: null };
+  }
+  if (dueDate.isSameOrBefore()) {
+    return { cardBg: 'bg-danger text-white', btnBorder: 'border-white' };
+  }
+  return { cardBg: null, btnBorder: null };
+}
+
 // Todo: create a function to generate a unique task id
 function generateTaskId() {}
 
 // Todo: create a function to create a task card
 function createTaskCard({ taskTitle, taskDueDate, taskDescription }) {
-  const newTaskCard = $(`<div class='card text-white bg-primary mb-3'>`);
+  const newTaskCard = $(
+    `<div class='card mb-3 ${compareDates(taskDueDate).cardBg}'>`
+  );
   newTaskCard.html(`<h4 class='card-header'>${taskTitle}</h4>
   <div class='card-body'>
   <p>${taskDescription}</p>
   <p>${taskDueDate.format('MM/DD/YYYY')}</p>
-  <button class='btn btn-danger'>Delete</button>
+  <button class='btn btn-danger ${
+    compareDates(taskDueDate).btnBorder
+  }'>Delete</button>
   </div>
   `);
   $('#todo-cards').append(newTaskCard);
@@ -32,7 +47,6 @@ function handleAddTask(event) {
     taskDueDate,
     taskDescription,
   };
-  console.log(newTask);
   createTaskCard(newTask);
   return newTask;
 }

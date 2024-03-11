@@ -164,6 +164,31 @@
       src="https://cdn.jsdelivr.net/npm/dayjs@1.11.3/dayjs.min.js"
       integrity="sha256-iu/zLUB+QgISXBLCW/mcDi/rnf4m4uEDO0wauy76x7U="
       crossorigin="anonymous"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.10/plugin/isTomorrow.min.js"
+      integrity="sha512-vLarZYh+kxl2xV1XWlR4a1RmYYMo4x/wKxGoEej5Pl0GocYdniaoNX59/Yi5mbkSWvEbU2KG8xDGrbf5Z+rLKw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.10/plugin/isToday.min.js"
+      integrity="sha512-wDcF/3o0NA8ZSiwAQwhkCs7wMb8RKAn/jkW4b3tlxassNYUO46MsD0MuFOc16LNtkmkCH+qxQTAc+3/5JsTEoA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"></script>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.10/plugin/isSameOrBefore.min.js"
+      integrity="sha512-QrDN35Hb2sRTjFOKNIMLrX6SrjsJBlBE1+WAZnXJPEfGlYiPRgmN8oE9Uvz/5S+h55lmp/Jsiq1gHfCDAquXWA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"></script>
+    <script>
+      dayjs.extend(window.dayjs_plugin_isTomorrow);
+    </script>
+    <script>
+      dayjs.extend(window.dayjs_plugin_isToday);
+    </script>
+    <script>
+      dayjs.extend(window.dayjs_plugin_isSameOrBefore);
+    </script>
 
     <script src="./assets/js/script.js"></script>
   </body>
