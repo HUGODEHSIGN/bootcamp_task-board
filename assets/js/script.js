@@ -81,6 +81,13 @@ function renderTaskList() {
 // Todo: create a function to handle adding a new task
 function handleAddTask(event) {
   event.preventDefault();
+  const form = event.target;
+  console.log(form.checkValidity());
+  $(form).addClass('was-validated');
+  if (!form.checkValidity()) {
+    return;
+  }
+
   const taskTitle = $(event.target).find('input')[0].value;
   const taskDueDate = $(event.target).find('input')[1].value;
   const taskDescription = $(event.target).find('input')[2].value;
